@@ -1,12 +1,21 @@
+import 'package:uuid/uuid.dart';
+import 'package:uuid/v4.dart';
+
+final uuid = Uuid();
+
+enum Category { food, travel, leisure, work }
+
 class Expense {
   Expense(
       {required this.title,
       required this.amount,
-      required this.id,
-      required this.date});
+      required this.date,
+      required this.category})
+      : id = uuid.v4();
 
   final String title;
   final double amount;
   final String id;
   final DateTime date;
+  final Category category;
 }
