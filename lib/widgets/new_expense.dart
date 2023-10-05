@@ -11,12 +11,12 @@ class NewExpense extends StatefulWidget {
 
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
-  final _valueController = TextEditingController();
+  final _amountController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
-    _valueController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -32,27 +32,45 @@ class _NewExpenseState extends State<NewExpense> {
             keyboardType: TextInputType.text,
             decoration: const InputDecoration(label: Text("Title")),
           ),
-          TextField(
-            controller: _valueController,
-            maxLength: 50,
-            keyboardType: TextInputType.number,
-            decoration:
-                const InputDecoration(prefixText: "\$ ", label: Text("Amount")),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  maxLength: 50,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                      prefixText: "\$ ", label: Text("Amount")),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                  child: Row(
+                children: [
+                  const Text("Selected Date"),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.calendar_month_rounded,
+                    ),
+                  ),
+                ],
+              )),
+            ],
           ),
           Row(
             children: [
               ElevatedButton(
                 onPressed: () {
                   print(_titleController.text);
-                  print(_valueController.text);
+                  print(_amountController.text);
                 },
                 child: const Text("Save Expense"),
               ),
               Spacer(),
               TextButton(
                 onPressed: () {
-                  print(_titleController.text);
-                  print(_valueController.text);
+                  Navigator.pop(context);
                 },
                 child: const Text("Cancel"),
               ),
