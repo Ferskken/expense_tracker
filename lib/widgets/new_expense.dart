@@ -36,7 +36,8 @@ class _NewExpenseState extends State<NewExpense> {
             controller: _valueController,
             maxLength: 50,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(label: Text("Value")),
+            decoration:
+                const InputDecoration(prefixText: "\$ ", label: Text("Amount")),
           ),
           Row(
             children: [
@@ -47,7 +48,8 @@ class _NewExpenseState extends State<NewExpense> {
                 },
                 child: const Text("Save Expense"),
               ),
-              ElevatedButton(
+              Spacer(),
+              TextButton(
                 onPressed: () {
                   print(_titleController.text);
                   print(_valueController.text);
