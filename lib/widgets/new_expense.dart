@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -12,13 +13,29 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  DateTime? _selectedDate;
+  Category _selectedCategory = Category.food;
+
+  void _presentDatePicker() async {
+    final pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1990),
+        lastDate: DateTime.now());
+    setState(() {
+      _selectedDate = pickedDate;
+    });
+  }
 
   @override
   void dispose() {
     _titleController.dispose();
     _amountController.dispose();
+
     super.dispose();
   }
+
+  void _submitExpenseData() {}
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +54,7 @@ class _NewExpenseState extends State<NewExpense> {
               Expanded(
                 child: TextField(
                   controller: _amountController,
-                  maxLength: 50,
+                  //maxLength: 50,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                       prefixText: "\$ ", label: Text("Amount")),
@@ -46,10 +63,14 @@ class _NewExpenseState extends State<NewExpense> {
               const SizedBox(width: 16),
               Expanded(
                   child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text("Selected Date"),
+                  Text(_selectedDate == null
+                      ? "No Date Selected"
+                      : formatter.format(_selectedDate!)),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: _presentDatePicker,
                     icon: const Icon(
                       Icons.calendar_month_rounded,
                     ),
@@ -58,8 +79,32 @@ class _NewExpenseState extends State<NewExpense> {
               )),
             ],
           ),
+          const SizedBox(
+            height: 16,
+          ),
           Row(
             children: [
+              DropdownButton(
+                  value: _selectedCategory,
+                  items: Category.values
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(
+                            category.name.toUpperCase(),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                  }),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   print(_titleController.text);
@@ -67,7 +112,6 @@ class _NewExpenseState extends State<NewExpense> {
                 },
                 child: const Text("Save Expense"),
               ),
-              Spacer(),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
