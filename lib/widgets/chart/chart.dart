@@ -54,11 +54,17 @@ class Chart extends StatelessWidget {
       ),
       child: Column(
         children: [
+          Text(
+            'Total Expenses',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                for (final bucket in buckets) // alternative to map()
+                for (final bucket in buckets)
                   ChartBar(
                     fill: bucket.totalExpenses == 0
                         ? 0
@@ -69,24 +75,37 @@ class Chart extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Row(
-            children: buckets
-                .map(
-                  (bucket) => Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(
-                        categoryIcons[bucket.category],
-                        color: isDarkMode
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context)
-                                .colorScheme
-                                .primary
-                                .withOpacity(0.7),
-                      ),
+            children: [
+              ...buckets.map((bucket) {
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Column(
+                      children: [
+                        Icon(
+                          categoryIcons[bucket.category],
+                          color: isDarkMode
+                              ? Theme.of(context).colorScheme.secondary
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.7),
+                        ),
+                        const SizedBox(
+                            height:
+                                5), // Add spacing between icon and text field
+                        Text(
+                          ' \$${bucket.totalExpenses}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                )
-                .toList(),
+                );
+              }).toList(),
+            ],
           )
         ],
       ),
