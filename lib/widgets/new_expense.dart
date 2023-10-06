@@ -40,39 +40,53 @@ class _NewExpenseState extends State<NewExpense> {
 
   void _submitExpenseData() {
     final enteredAmount = double.tryParse(_amountController.text);
-    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
-    if (_titleController.text.trim().isEmpty ||
-        amountIsInvalid ||
-        _selectedDate == null) {
-      showDialog(
-        context: context,
-        builder: (cxt) => AlertDialog(
-          title: const Text("Invalid Input"),
-          content: const Text("Missing valid title, amount or date"),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(cxt);
-                },
-                child: const Text("Ok"))
-          ],
-        ),
-      );
-      return;
+
+    List<String> errorMessages = [];
+
+    if (_titleController.text.trim().isEmpty) {
+      errorMessages.add("Title is missing.");
+    }
+    if (enteredAmount == null || enteredAmount <= 0) {
+      errorMessages.add("Amount is invalid.");
+    }
+    if (_selectedDate == null) {
+      errorMessages.add("Date is missing.");
     }
 
-    widget.onAddExpense(Expense(
-        title: _titleController.text,
-        amount: enteredAmount,
-        date: _selectedDate!,
-        category: _selectedCategory));
-    Navigator.pop(context);
+    if (errorMessages.isNotEmpty) {
+      _showErrorDialog(errorMessages.join("\n"));
+    } else {
+      widget.onAddExpense(Expense(
+          title: _titleController.text,
+          amount: enteredAmount ?? 0.0,
+          date: _selectedDate!,
+          category: _selectedCategory));
+      Navigator.pop(context);
+    }
+  }
+
+  void _showErrorDialog(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (cxt) => AlertDialog(
+        title: const Text("Invalid Input"),
+        content: Text(errorMessage),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(cxt);
+            },
+            child: const Text("Ok"),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 50, 16, 16),
+      padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
       child: Column(
         children: [
           TextField(
