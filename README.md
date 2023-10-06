@@ -2,6 +2,10 @@
  Expense_tracker school assignment
 
 
+This is an expense tracker where you can make new expenses in four categories: Leisure, Food, Travel and Work.
+Each expense can be given a dollar ammount, a title, a category and a date.  You add expenses by clicking the "Add" icon in the top right of the app bar.
+All your expenses will be shown in graphs above relative to eachother.
+
 
 
 My additional feautures are:
