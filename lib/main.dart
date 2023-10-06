@@ -4,10 +4,29 @@ import 'package:expense_tracker/widgets/expenses.dart';
 
 var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.blueAccent);
 
+var kDarkColorScheme = ColorScheme.fromSeed(
+    brightness: Brightness.dark, seedColor: Color.fromARGB(255, 3, 54, 68));
+
 void main() {
   runApp(
     MaterialApp(
         debugShowCheckedModeBanner: false,
+        darkTheme: ThemeData.dark().copyWith(
+          useMaterial3: true,
+          colorScheme: kDarkColorScheme,
+          cardTheme: const CardTheme().copyWith(
+            color: kDarkColorScheme.secondaryContainer,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 5,
+            ),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: kDarkColorScheme.primaryContainer,
+                foregroundColor: kDarkColorScheme.onPrimaryContainer),
+          ),
+        ),
         theme: ThemeData().copyWith(
           useMaterial3: true,
           colorScheme: kColorScheme,
@@ -17,23 +36,25 @@ void main() {
             centerTitle: true,
           ),
           cardTheme: const CardTheme().copyWith(
-              color: kColorScheme.secondaryContainer,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 5,
-              )),
+            color: kColorScheme.secondaryContainer,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 5,
+            ),
+          ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
                 backgroundColor: kColorScheme.primaryContainer),
           ),
           textTheme: ThemeData().textTheme.copyWith(
                 titleLarge: TextStyle(
-                  fontWeight: FontWeight.normal,
+                  fontWeight: FontWeight.bold,
                   color: kColorScheme.onSecondaryContainer,
-                  fontSize: 25,
+                  fontSize: 18,
                 ),
               ),
         ),
+        themeMode: ThemeMode.system,
         home: Expenses()),
   );
 }
