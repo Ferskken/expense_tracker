@@ -112,18 +112,30 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               const SizedBox(width: 16),
               Expanded(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Column(
                 children: [
-                  Text(_selectedDate == null
-                      ? "No Date Selected"
-                      : formatter.format(_selectedDate!)),
-                  IconButton(
-                    onPressed: _presentDatePicker,
-                    icon: const Icon(
-                      Icons.calendar_month_rounded,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(_selectedDate == null
+                          ? "No Date Selected"
+                          : formatter.format(_selectedDate!)),
+                      IconButton(
+                        onPressed: _presentDatePicker,
+                        icon: const Icon(
+                          Icons.calendar_month_rounded,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedDate = DateTime.now();
+                      });
+                    },
+                    child: const Text("Use current date"),
                   ),
                 ],
               )),
