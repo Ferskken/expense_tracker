@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/services.dart';
 
+// A StatefulWidget for adding a new expense
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key, required this.onAddExpense});
 
+  // Callback function to add a new expense
   final void Function(Expense expense) onAddExpense;
 
   @override
@@ -19,6 +21,7 @@ class _NewExpenseState extends State<NewExpense> {
   DateTime? _selectedDate;
   Category _selectedCategory = Category.food;
 
+  // Function to present the date picker
   void _presentDatePicker() async {
     final pickedDate = await showDatePicker(
         context: context,
@@ -38,7 +41,9 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
+  // Function to submit expense data
   void _submitExpenseData() {
+    // Parse the entered amount, allowing both comma and dot as decimal separators
     final enteredAmount =
         double.tryParse(_amountController.text.replaceAll(',', '.'));
 
@@ -55,17 +60,20 @@ class _NewExpenseState extends State<NewExpense> {
     }
 
     if (errorMessages.isNotEmpty) {
+      // Display an error dialog with the collected error messages
       _showErrorDialog(errorMessages.join("\n"));
     } else {
+      // Create a new Expense object and add it using the callback function
       widget.onAddExpense(Expense(
           title: _titleController.text,
           amount: enteredAmount ?? 0.0,
           date: _selectedDate!,
           category: _selectedCategory));
-      Navigator.pop(context);
+      Navigator.pop(context); // Close the new expense overlay
     }
   }
 
+  // Function to show an error dialog
   void _showErrorDialog(String errorMessage) {
     showDialog(
       context: context,
@@ -91,6 +99,7 @@ class _NewExpenseState extends State<NewExpense> {
       child: Column(
         children: [
           TextField(
+            // Text field for entering the expense title
             controller: _titleController,
             maxLength: 50,
             keyboardType: TextInputType.text,
@@ -100,9 +109,11 @@ class _NewExpenseState extends State<NewExpense> {
             children: [
               Expanded(
                 child: TextField(
+                  // Text field for entering the expense amount
                   controller: _amountController,
                   keyboardType: TextInputType.number,
                   inputFormatters: [
+                    // Regular expression to allow numeric input with comma or dot
                     FilteringTextInputFormatter.allow(
                         RegExp(r'^\d*[\.,]?\d*$')),
                   ],
@@ -131,6 +142,7 @@ class _NewExpenseState extends State<NewExpense> {
                       ),
                     ],
                   ),
+                  // Button to use current date as [_selectedDate]
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -148,6 +160,7 @@ class _NewExpenseState extends State<NewExpense> {
           ),
           Row(
             children: [
+              // Dropdown button for selecting the expense category
               DropdownButton(
                   value: _selectedCategory,
                   items: Category.values
@@ -169,10 +182,12 @@ class _NewExpenseState extends State<NewExpense> {
                     });
                   }),
               const Spacer(),
+              // Button to save the expense data
               ElevatedButton(
                 onPressed: _submitExpenseData,
                 child: const Text("Save"),
               ),
+              // Button to cancel and close the new expense overlay
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);

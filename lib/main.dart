@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:expense_tracker/widgets/expenses.dart';
 
+// Color scheme for the light theme
 var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.blueAccent);
 
+// Color scheme for the dark theme
 var kDarkColorScheme = ColorScheme.fromSeed(
     brightness: Brightness.dark, seedColor: Color.fromARGB(255, 3, 54, 68));
 
@@ -12,6 +14,7 @@ void main() {
     MaterialApp(
         debugShowCheckedModeBanner: false,
         darkTheme: ThemeData.dark().copyWith(
+          // Dark theme configuration
           useMaterial3: true,
           colorScheme: kDarkColorScheme,
           cardTheme: const CardTheme().copyWith(
@@ -28,6 +31,7 @@ void main() {
           ),
         ),
         theme: ThemeData().copyWith(
+          // Light theme configuration
           useMaterial3: true,
           colorScheme: kColorScheme,
           appBarTheme: AppBarTheme().copyWith(
@@ -54,7 +58,7 @@ void main() {
                 ),
               ),
         ),
-        themeMode: ThemeMode.system,
-        home: Expenses()),
+        themeMode: ThemeMode.system, // Use the system's theme (light or dark)
+        home: Expenses()), // Set the home screen to the Expenses widget
   );
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'chart/chart.dart';
 
+// A StatefulWidget that represents the main expenses page
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
 
@@ -15,6 +16,7 @@ class Expenses extends StatefulWidget {
 
 class _ExpensesState extends State<Expenses> {
   final List<Expense> _registeredExpenses = [
+    //Left dummy Expenses in for ease of testing.
     Expense(
         title: "Flutter course",
         amount: 9.99,
@@ -37,6 +39,7 @@ class _ExpensesState extends State<Expenses> {
         category: Category.travel)
   ];
 
+  // Function to open the "Add Expense" overlay
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -45,12 +48,14 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
+  // Function to add an expense to the list
   void _addExpense(Expense expense) {
     setState(() {
       _registeredExpenses.add(expense);
     });
   }
 
+  // Function to remove an expense from the list
   void _removeExpense(Expense expense) {
     final expenseIndex = _registeredExpenses.indexOf(expense);
     setState(() {
@@ -74,8 +79,10 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize main content as a message if there are no expenses
     Widget mainContent = const Center(child: Text("No expenses in list"));
 
+    // If there are registered expenses, display the ExpensesList widget
     if (_registeredExpenses.isNotEmpty) {
       mainContent = ExpensesList(
         expenses: _registeredExpenses,
@@ -95,7 +102,8 @@ class _ExpensesState extends State<Expenses> {
         children: [
           Chart(expenses: _registeredExpenses),
           Expanded(
-            child: mainContent,
+            child:
+                mainContent, // Display either the message or the list of expenses
           ),
         ],
       ),

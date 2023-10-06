@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/widgets/chart/chart_bar.dart';
 import 'package:expense_tracker/models/expense.dart';
 
+// A custom widget for displaying a chart of expenses
 class Chart extends StatelessWidget {
   const Chart({super.key, required this.expenses});
 
+  // List of expenses to be used in the chart
   final List<Expense> expenses;
 
+  // Calculate expense buckets for different categories
   List<ExpenseBucket> get buckets {
     return [
       ExpenseBucket.forCategory(expenses, Category.food),
@@ -17,6 +20,7 @@ class Chart extends StatelessWidget {
     ];
   }
 
+  // Calculate the maximum total expense among all buckets
   double get maxTotalExpense {
     double maxTotalExpense = 0;
 
@@ -31,6 +35,7 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine the brightness of the platform (light or dark mode)
     final isDarkMode =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Container(
@@ -54,9 +59,9 @@ class Chart extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(
+          const Text(
             'Total Expenses',
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -95,7 +100,7 @@ class Chart extends StatelessWidget {
                             height:
                                 5), // Add spacing between icon and text field
                         Text(
-                          ' \$${bucket.totalExpenses}',
+                          ' \$${bucket.totalExpenses}', // Display the total expenses for each category
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
