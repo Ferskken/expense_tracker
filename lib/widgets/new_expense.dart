@@ -39,7 +39,8 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
   void _submitExpenseData() {
-    final enteredAmount = double.tryParse(_amountController.text);
+    final enteredAmount =
+        double.tryParse(_amountController.text.replaceAll(',', '.'));
 
     List<String> errorMessages = [];
 
@@ -102,7 +103,8 @@ class _NewExpenseState extends State<NewExpense> {
                   controller: _amountController,
                   keyboardType: TextInputType.number,
                   inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\d*[\.,]?\d*$')),
                   ],
                   decoration: const InputDecoration(
                     prefixText: "\$ ",
